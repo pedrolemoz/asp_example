@@ -1,0 +1,26 @@
+name: asp_example
+description: Atomic State Pattern Example
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.2 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  asp: ^1.0.3
+  flutter_modular: ^5.0.3
+  result_dart: ^1.0.6
+  unicons: ^2.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutterando_analysis: ^0.0.2
+
+flutter:
+  uses-material-design: true
