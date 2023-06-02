@@ -1,6 +1,7 @@
 import 'package:result_dart/result_dart.dart';
 
-import '../exceptions/auth_exceptions.dart';
+import '../../modules/authentication/exceptions/auth_exceptions.dart';
+import '../exceptions/app_exception.dart';
 
 mixin class UserNameValidationMixin {
   Result<Unit, AppException> validateUserName(String userName) {

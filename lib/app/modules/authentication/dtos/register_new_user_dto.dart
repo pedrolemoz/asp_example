@@ -1,9 +1,9 @@
 import 'package:result_dart/result_dart.dart';
 
-import '../exceptions/auth_exceptions.dart';
-import '../mixins/email_validation_mixin.dart';
-import '../mixins/password_validation_mixin.dart';
-import '../mixins/user_name_validation_mixin.dart';
+import '../../../core/exceptions/app_exception.dart';
+import '../../../core/mixins/email_validation_mixin.dart';
+import '../../../core/mixins/password_validation_mixin.dart';
+import '../../../core/mixins/user_name_validation_mixin.dart';
 
 class RegisterNewUserDTO
     with

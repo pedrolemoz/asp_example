@@ -1,7 +1,8 @@
 import 'package:result_dart/result_dart.dart';
 
-import '../../core/regular_expressions/regular_expressions.dart';
-import '../exceptions/auth_exceptions.dart';
+import '../../modules/authentication/exceptions/auth_exceptions.dart';
+import '../exceptions/app_exception.dart';
+import '../regular_expressions/regular_expressions.dart';
 
 mixin class EmailValidationMixin {
   Result<Unit, AppException> validateEmail(String email) {

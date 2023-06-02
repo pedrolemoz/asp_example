@@ -1,9 +1,9 @@
 import 'package:result_dart/result_dart.dart';
 
-import '../../core/models/user_model.dart';
+import '../../../core/exceptions/app_exception.dart';
+import '../../../core/models/user_model.dart';
 import '../dtos/login_with_credentials_dto.dart';
 import '../dtos/register_new_user_dto.dart';
-import '../exceptions/auth_exceptions.dart';
 
 class AuthenticationService {
   AsyncResult<UserModel, AppException> loginWithCredentials(
