@@ -18,6 +18,13 @@ class AuthException extends AppException {
   });
 }
 
+class InvalidUserNameException extends AuthException {
+  InvalidUserNameException({
+    super.description = 'The user name is not valid',
+    super.stackTrace,
+  });
+}
+
 class InvalidEmailException extends AuthException {
   InvalidEmailException({
     super.description = 'The email is not valid',

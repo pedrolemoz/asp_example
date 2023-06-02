@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 8),
                     InputText(
-                      hideText: loginPasswordTextHidden.value,
+                      hideText: loginPasswordTextVisibility.value,
                       hintText: 'Password',
                       showVisibilityToggle: true,
                       onVisibilityToggle: toggleLoginPasswordVisibilityAction,

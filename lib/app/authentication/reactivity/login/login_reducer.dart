@@ -39,6 +39,6 @@ class LoginReducer extends Reducer {
   }
 
   Future<void> _onTogglePasswordVisibilityAction() async {
-    loginPasswordTextHidden.setValue(!loginPasswordTextHidden.value);
+    loginPasswordTextVisibility.setValue(!loginPasswordTextVisibility.value);
   }
 }
