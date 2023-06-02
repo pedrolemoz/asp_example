@@ -10,7 +10,7 @@ class AuthenticationService {
     LoginWithCredentialsDTO dto,
   ) async {
     return dto.validate().toAsyncResult().flatMap((_) async {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 1));
       return Success(
         UserModel(
           name: dto.email.split('@').first,
@@ -24,7 +24,7 @@ class AuthenticationService {
     RegisterNewUserDTO dto,
   ) async {
     return dto.validate().toAsyncResult().flatMap((_) async {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 1));
       return Success(
         UserModel(
           name: dto.userName,
