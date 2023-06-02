@@ -13,7 +13,7 @@ class LoginReducer extends Reducer {
     on(() => [loginWithCredentialsAction], _onLoginWithCredentialsAction);
     on(
       () => [toggleLoginPasswordVisibilityAction],
-      _onTogglePasswordVisibilityAction,
+      _onToggleLoginPasswordVisibilityAction,
     );
   }
 
@@ -38,7 +38,7 @@ class LoginReducer extends Reducer {
     loginLoadingState.setValue(false);
   }
 
-  Future<void> _onTogglePasswordVisibilityAction() async {
+  Future<void> _onToggleLoginPasswordVisibilityAction() async {
     loginPasswordTextVisibility.setValue(!loginPasswordTextVisibility.value);
   }
 }

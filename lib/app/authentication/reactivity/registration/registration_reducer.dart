@@ -16,7 +16,7 @@ class RegistrationReducer extends Reducer {
     );
     on(
       () => [toggleRegistrationPasswordVisibilityAction],
-      _onTogglePasswordVisibilityAction,
+      _onToggleRegistrationPasswordVisibilityAction,
     );
   }
 
@@ -42,7 +42,7 @@ class RegistrationReducer extends Reducer {
     registrationLoadingState.setValue(false);
   }
 
-  Future<void> _onTogglePasswordVisibilityAction() async {
+  Future<void> _onToggleRegistrationPasswordVisibilityAction() async {
     registrationPasswordTextVisibility
         .setValue(!registrationPasswordTextVisibility.value);
   }
