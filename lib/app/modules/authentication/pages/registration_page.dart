@@ -1,7 +1,8 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 
-import '../exceptions/auth_exceptions.dart';
+import '../../../core/presentation/base_states.dart';
+import '../reactivity/common/auth_common_states.dart';
 import '../reactivity/registration/registration_actions.dart';
 import '../reactivity/registration/registration_atoms.dart';
 import '../reactivity/registration/registration_states.dart';
@@ -21,8 +22,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   void initState() {
     super.initState();
 
-    registrationLoadingState.addListener(() {
-      final isLoading = registrationLoadingState.value;
+    registrationState.addListener(() {
+      final isLoading = registrationState.value is IProcessingState;
 
       if (isLoading) {
         entry = OverlayEntry(
@@ -50,18 +51,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
     context.callback(
       () => registrationState.value,
       (value) {
-        final snackBar = SnackBar(
-          content: Text(
-            'Welcome, ${value?.name ?? 'User'}',
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      },
-    );
-    context.callback(
-      () => registrationErrorState.value,
-      (value) {
-        if (value != null) {
+        if (value is SuccesfullyRegisteredUserState) {
+          final userModel = value.userModel;
+          final snackBar = SnackBar(
+            content: Text(
+              'Welcome, ${userModel.name}',
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+
+        if (value is IErrorState) {
           const snackBar = SnackBar(content: Text('An error occurred'));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
@@ -94,11 +94,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       hintText: 'Name',
                       initialValue: registrationUserNameText.value,
                       onChanged: registrationUserNameText.setValue,
-                      hasError: registrationErrorState.value
-                          is InvalidUserNameException,
-                      errorText: registrationErrorState.value
-                              is InvalidUserNameException
-                          ? registrationErrorState.value?.description
+                      hasError: registrationState.value is InvalidUserNameState,
+                      errorText: registrationState.value is InvalidUserNameState
+                          ? (registrationState.value as InvalidUserNameState)
+                              .description
                           : null,
                     ),
                     const SizedBox(height: 8),
@@ -106,12 +105,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       hintText: 'Email',
                       initialValue: registrationEmailText.value,
                       onChanged: registrationEmailText.setValue,
-                      hasError:
-                          registrationErrorState.value is InvalidEmailException,
-                      errorText:
-                          registrationErrorState.value is InvalidEmailException
-                              ? registrationErrorState.value?.description
-                              : null,
+                      hasError: registrationState.value is InvalidEmailState,
+                      errorText: registrationState.value is InvalidEmailState
+                          ? (registrationState.value as InvalidEmailState)
+                              .description
+                          : null,
                     ),
                     const SizedBox(height: 8),
                     InputText(
@@ -122,11 +120,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           toggleRegistrationPasswordVisibilityAction,
                       initialValue: registrationPasswordText.value,
                       onChanged: registrationPasswordText.setValue,
-                      hasError: registrationErrorState.value
-                          is InvalidPasswordException,
-                      errorText: registrationErrorState.value
-                              is InvalidPasswordException
-                          ? registrationErrorState.value?.description
+                      hasError: registrationState.value is InvalidPasswordState,
+                      errorText: registrationState.value is InvalidPasswordState
+                          ? (registrationState.value as InvalidPasswordState)
+                              .description
                           : null,
                     ),
                     const SizedBox(height: 16),

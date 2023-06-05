@@ -1,8 +1,20 @@
 import 'package:asp/asp.dart';
 
-import '../../../../core/exceptions/app_exception.dart';
 import '../../../../core/models/user_model.dart';
+import '../../../../core/presentation/base_states.dart';
 
-final registrationState = Atom<UserModel?>(null);
-final registrationErrorState = Atom<AppException?>(null);
-final registrationLoadingState = Atom<bool>(false);
+final registrationState = Atom<IAppState>(InitialState());
+
+class RegisteringUserState implements IProcessingState {}
+
+class UnableToRegisterUserState implements IErrorState {
+  final String description;
+
+  UnableToRegisterUserState({required this.description});
+}
+
+class SuccesfullyRegisteredUserState implements ISuccessState {
+  final UserModel userModel;
+
+  SuccesfullyRegisteredUserState({required this.userModel});
+}

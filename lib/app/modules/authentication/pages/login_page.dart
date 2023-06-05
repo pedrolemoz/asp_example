@@ -1,7 +1,8 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 
-import '../exceptions/auth_exceptions.dart';
+import '../../../core/presentation/base_states.dart';
+import '../reactivity/common/auth_common_states.dart';
 import '../reactivity/login/login_actions.dart';
 import '../reactivity/login/login_atoms.dart';
 import '../reactivity/login/login_states.dart';
@@ -21,8 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
 
-    loginLoadingState.addListener(() {
-      final isLoading = loginLoadingState.value;
+    loginState.addListener(() {
+      final isLoading = loginState.value is IProcessingState;
 
       if (isLoading) {
         entry = OverlayEntry(
@@ -50,18 +51,17 @@ class _LoginPageState extends State<LoginPage> {
     context.callback(
       () => loginState.value,
       (value) {
-        final snackBar = SnackBar(
-          content: Text(
-            'Welcome, ${value?.name ?? 'User'}',
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      },
-    );
-    context.callback(
-      () => loginErrorState.value,
-      (value) {
-        if (value != null) {
+        if (value is SuccesfullyAuthenticatedUserState) {
+          final userModel = value.userModel;
+          final snackBar = SnackBar(
+            content: Text(
+              'Welcome, ${userModel.name}',
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+
+        if (value is IErrorState) {
           const snackBar = SnackBar(content: Text('An error occurred'));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
@@ -94,9 +94,9 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: 'Email',
                       initialValue: loginEmailText.value,
                       onChanged: loginEmailText.setValue,
-                      hasError: loginErrorState.value is InvalidEmailException,
-                      errorText: loginErrorState.value is InvalidEmailException
-                          ? loginErrorState.value?.description
+                      hasError: loginState.value is InvalidEmailState,
+                      errorText: loginState.value is InvalidEmailState
+                          ? (loginState.value as InvalidEmailState).description
                           : null,
                     ),
                     const SizedBox(height: 8),
@@ -107,12 +107,11 @@ class _LoginPageState extends State<LoginPage> {
                       onVisibilityToggle: toggleLoginPasswordVisibilityAction,
                       initialValue: loginPasswordText.value,
                       onChanged: loginPasswordText.setValue,
-                      hasError:
-                          loginErrorState.value is InvalidPasswordException,
-                      errorText:
-                          loginErrorState.value is InvalidPasswordException
-                              ? loginErrorState.value?.description
-                              : null,
+                      hasError: loginState.value is InvalidPasswordState,
+                      errorText: loginState.value is InvalidPasswordState
+                          ? (loginState.value as InvalidPasswordState)
+                              .description
+                          : null,
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(

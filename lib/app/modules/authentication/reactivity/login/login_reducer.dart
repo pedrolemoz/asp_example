@@ -1,7 +1,9 @@
 import 'package:asp/asp.dart';
 
 import '../../dtos/login_with_credentials_dto.dart';
+import '../../exceptions/auth_exceptions.dart';
 import '../../services/authentication_service.dart';
+import '../common/auth_common_states.dart';
 import 'login_actions.dart';
 import 'login_atoms.dart';
 import 'login_states.dart';
@@ -18,7 +20,7 @@ class LoginReducer extends Reducer {
   }
 
   Future<void> _onLoginWithCredentialsAction() async {
-    loginLoadingState.setValue(true);
+    loginState.setValue(AuthenticatingUserState());
 
     final dto = LoginWithCredentialsDTO(
       email: loginEmailText.value,
@@ -29,13 +31,37 @@ class LoginReducer extends Reducer {
 
     result.fold(
       (success) {
-        loginState.setValue(success);
-        loginErrorState.setValue(null);
+        loginState.setValue(
+          SuccesfullyAuthenticatedUserState(
+            userModel: success,
+          ),
+        );
       },
-      loginErrorState.setValue,
+      (failure) {
+        switch (failure.runtimeType) {
+          case InvalidEmailException:
+            loginState.setValue(
+              InvalidEmailState(
+                description: failure.description,
+              ),
+            );
+            break;
+          case InvalidPasswordException:
+            loginState.setValue(
+              InvalidPasswordState(
+                description: failure.description,
+              ),
+            );
+            break;
+          default:
+            loginState.setValue(
+              UnableToAuthenticateUserState(
+                description: failure.description,
+              ),
+            );
+        }
+      },
     );
-
-    loginLoadingState.setValue(false);
   }
 
   Future<void> _onToggleLoginPasswordVisibilityAction() async {
